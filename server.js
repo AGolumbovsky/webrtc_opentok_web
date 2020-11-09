@@ -1,14 +1,18 @@
 const express = require('express');
 const fs = require('fs');
-// const http = require('http');
+const http = require('http');
 const https = require('https');
 
 const app = express();
 
-var privateKey  = fs.readFileSync(process.env.HOME + '/ssl/server.key');
-var certificate = fs.readFileSync(process.env.HOME + '/ssl/server.crt');
+app.use(express.static(__dirname + "/"));
 
-var credentials = {key: privateKey, cert: certificate};
+console.log(process.cwd);
+
+// var privateKey  = fs.readFileSync('/ssl/server.key');
+// var certificate = fs.readFileSync(process.env.HOME + '/ssl/server.crt');
+
+// var credentials = {key: privateKey, cert: certificate};
 
 
 /*app.use(function (req, res, next) {
@@ -20,17 +24,16 @@ var credentials = {key: privateKey, cert: certificate};
     }
   });*/
   
-  app.use(express.static(__dirname + '/'));
   
 
-// const HTTP_PORT = process.env.PORT || 8080;
-// const HTTPS_PORT = process.env.PORT || 8080;
+const HTTP_PORT = process.env.PORT || 8080;
+// const HTTPS_PORT = process.env.PORT || 8443;
 
-// var httpServer = http.createServer(app);
-var httpsServer = https.createServer(credentials, app);
+var httpServer = http.createServer(app);
+// var httpsServer = https.createServer(credentials, app);
 
-// httpServer.listen(8080);
-httpsServer.listen(8443)
+httpServer.listen(HTTP_PORT);
+// httpsServer.listen(HTTPS_PORT)
 
 /*app.listen(PORT, () => {
 	
